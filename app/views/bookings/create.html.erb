@@ -1,0 +1,28 @@
+<%= image_tag('plane-background.jpg', id:'background-img')%>
+<div id='header'>
+    <p id='title'>Flight Booker</p>
+</div>
+
+<p id='title'>Your flight was succesfully booked! </p>
+<% flight = Flight.find(params[:booking][:flight_id])%>
+<div id="booking-result">
+            <div id="result-titles">
+                <p id='titles-1'>From</p>
+                <p id='titles-2'>To</p>
+                <p id='titles-3'>Date</p>
+            </div>
+                <div id="booking-result-item">
+                    <div id='result-info'>
+                        <p id='info-1'><%= flight.departure_airport.name %></p>
+                        <p id='info-2'><%= flight.arrival_airport.name %></p>
+                        <p id='info-3'><%= flight.date.strftime('%F') %></p>
+                    </div>
+                </div>
+</div>
+<p id='bookings-title'>Passengers</p>
+<% @booking.passengers.each do |passenger| %>
+<div id='passenger-info'>
+    <%= passenger.name %>
+    <%= passenger.email %>
+</div>
+<% end %>

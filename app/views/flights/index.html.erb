@@ -1,0 +1,60 @@
+<%= image_tag('plane-background.jpg', id:'background-img')%>
+<div id='header'>
+    <%= link_to root_path do %>
+        <p id='title'>Flight Booker</p>
+    <% end %>
+</div>
+
+<% if params[:date].nil? %>
+<% params[:departure_airport] = 1 %>
+<% params[:arrival_airport] = 2 %>
+<% params[:date] = Date.today.strftime('%F') %>
+<% params[:tickets] = 1 %>
+<% end %>
+
+<%= form_with model: @index, method: :get, id:'search-form' do |f| %>
+<div id='form-item'>
+    <%= f.label(:departure_airport, 'From')%>
+    <%= f.select(:departure_airport, @airports, selected: params[:departure_airport])%>
+</div>
+<div id="form-item">
+    <%= f.label(:arrival_airport, 'To')%>
+    <%= f.select(:arrival_airport, @airports, selected: params[:arrival_airport])%>
+</div>
+<div id="form-item">
+    <%= f.label(:date, 'Date')%>
+    <%= f.select(:date, @dates, selected: params[:date])%>
+</div>
+<div id="form-item">
+    <%= f.label(:tickets, 'Tickets')%>
+    <%= f.select(:tickets, @tickets, selected: params[:tickets])%>
+</div>
+<div id="form-item">
+    <%= f.label(:submit,  "&nbsp;".html_safe)%>
+    <%= f.submit "Search", id:'submit' %>
+    </div>
+<% end %>
+<% unless params[:commit].nil? %>
+    <%= form_with url: new_booking_path , id:'results-form', method: :get do |f| %>
+        <%= f.hidden_field(:tickets, :value => params[:tickets].to_i)%>
+        <div id="result">
+            <div id="result-titles">
+                <p id='titles-1'>From</p>
+                <p id='titles-2'>To</p>
+                <p id='titles-3'>Date</p>
+                <p id='titles-4'></p>
+            </div>
+                <% @results.each do |r| %>
+                <div id="result-item">
+                    <div id='result-info'>
+                        <p id='info-1'><%= r.departure_airport.name %></p>
+                        <p id='info-2'><%= r.arrival_airport.name %></p>
+                        <p id='info-3'><%= r.date.strftime('%F') %></p>
+                    </div>
+                    <%= f.radio_button(:flight_id, r.id.to_i) %>
+                </div>
+                <% end %>
+        </div>
+        <%= f.submit 'Book flight', id:'book'%>
+        <% end %>
+<% end %>

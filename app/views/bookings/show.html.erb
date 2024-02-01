@@ -1,0 +1,40 @@
+<%= image_tag('plane-background.jpg', id:'background-img')%>
+<div id='header'>
+    <%= link_to root_path do %>
+    <p id='title'>Flight Booker</p>
+    <% end %>
+</div>
+
+<p id='show-title'>Your flight was succesfully booked! </p>
+<% flight = @booking.flight %>
+<div id="booking-result">
+            <div id="result-titles">
+                <p id='titles-1'>From</p>
+                <p id='titles-2'>To</p>
+                <p id='titles-3'>Date</p>
+            </div>
+                <div id="booking-result-item">
+                    <div id='result-info'>
+                        <p id='info-1'><%= flight.departure_airport.name %></p>
+                        <p id='info-2'><%= flight.arrival_airport.name %></p>
+                        <p id='info-3'><%= flight.date.strftime('%F') %></p>
+                    </div>
+                </div>
+</div>
+<div id="dark-background">
+    <p id='show-title'>Passengers</p>
+</div>
+<div id='passengers-div'>
+    <% @booking.passengers.each do |passenger| %>
+    <div id='passenger-info'>
+        <strong>
+            <p>Name: </p>
+        </strong>
+        <%= passenger.name %>
+        <strong>
+            <p>Email: </p>
+        </strong>
+        <%= passenger.email %>
+    </div>
+    <% end %>
+</div>
