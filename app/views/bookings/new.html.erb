@@ -17,15 +17,29 @@
         </div>
     </div>
 </div>
+
 <p id='bookings-title'>Passenger information</p>
-<%= form_with model: @booking , id:'bookings-form', method: :post do |f| %>
-    <%= f.hidden_field(:tickets, :value => params[:tickets])%>
-    <%= f.hidden_field(:flight_id, :value => params[:flight_id]) %>
-    <%= f.fields_for :passengers do |passenger_form| %>
-        <div id='booking-field'>
-            <%= passenger_form.text_field(:name, placeholder:'Name') %>
-            <%= passenger_form.email_field(:email, placeholder:'Email') %>
+<div data-controller='passengers' id='form-passengers'>
+    <%= form_with model: @booking , id:'bookings-form', method: :post do |f| %>
+        <%= f.hidden_field(:tickets, :value => params[:tickets])%>
+        <%= f.hidden_field(:flight_id, :value => params[:flight_id]) %>
+        <%= f.fields_for :passengers do |passenger_form| %>
+            <div id='booking-field' data-passengers-target = 'output'>
+                <%= passenger_form.text_field(:name, placeholder:'Name') %>
+                <%= passenger_form.email_field(:email, placeholder:'Email') %>
+                <button id='remove' data-action='passengers#remove' type='button'>Remove</button>
+            </div>
+            <template id='new-booking'>
+                <div id='booking-field' data-passengers-target = 'output'>
+                    <%= passenger_form.text_field(:name, placeholder:'Name') %>
+                    <%= passenger_form.email_field(:email, placeholder:'Email') %>
+                    <button id='remove' data-action='passengers#remove' type='button'>Remove</button>
+                </div>
+            </template>
+        <% end %>
+        <div id='buttons'>
+            <%= button_tag('Add passenger', type: 'button', 'data-action' => 'passengers#add') %>
+            <%= f.submit 'Confirm Booking'%>
         </div>
     <% end %>
-    <%= f.submit 'Confirm Booking'%>
-<% end %>
+</div>
