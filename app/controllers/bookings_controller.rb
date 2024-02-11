@@ -9,6 +9,9 @@ class BookingsController < ApplicationController
 
     def create
         @booking = Booking.create(booking_params)
+        @booking.passengers.each do |passenger|
+        PassengerMailer.with(user: passenger, booking: @booking).welcome_email.deliver_now
+        end
         redirect_to @booking
     end
 
